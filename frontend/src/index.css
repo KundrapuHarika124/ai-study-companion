@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { background: #F6F7F5; color: #1B1F1E; }
+body { font-family: 'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, .display { font-family: 'IBM Plex Serif', Georgia, serif; }
+:focus-visible { outline: 2px solid #2F5D62; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+.prose-answer p { margin: 0 0 .6em; } .prose-answer ul, .prose-answer ol { padding-left: 1.2em; margin: .3em 0 .6em; } .prose-answer li { margin: .15em 0; }
+.prose-answer code { background: #EEF1EF; padding: .1em .3em; border-radius: 4px; font-size: .92em; }
+.prose-answer pre { background: #1B1F1E; color: #F6F7F5; padding: .8em; border-radius: 8px; overflow-x: auto; }
+.prose-answer h1,.prose-answer h2,.prose-answer h3 { font-family: inherit; font-weight: 600; margin: .8em 0 .3em; font-size: 1em; }
+.visual-svg svg { width: 100%; height: auto; }

@@ -4,6 +4,26 @@ from dataclasses import dataclass
 from app.core.config import settings
 from app.services import embeddings, vectorstore
 
+def clean_evidence_text(text: str) -> str:
+    """Clean PDF font artifacts and common mojibake from retrieved evidence."""
+    replacements = {
+        "\uf0b7": "-",
+        "\uf0a7": "-",
+        "\uf0a8": "-",
+        "ï·": "-",
+        "ï§": "-",
+        "â€¢": "-",
+        "â€“": "-",
+        "â€”": "-",
+        "â†’": "->",
+        "â†": "<-",
+        "Â": "",
+    }
+
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+
+    return text
 
 @dataclass
 class Evidence:
@@ -19,7 +39,7 @@ class Evidence:
 
     @property
     def label(self) -> str:
-        return f"{self.title} — Page {self.page}"
+        return f"{self.title} - Page {self.page}"
 
 
 async def retrieve(*, user_id: str, project_id: str, query: str, limit: int = 8, types: tuple[str, ...] = ("text",)) -> list[Evidence]:
@@ -33,9 +53,17 @@ async def retrieve(*, user_id: str, project_id: str, query: str, limit: int = 8,
         p = h.payload
         if p.get("project_id") != project_id or p.get("user_id") != user_id:
             continue  # defense in depth: never leak across projects even if a filter were misconfigured
-        out.append(Evidence(chunk_id=p["chunk_id"], material_id=p["material_id"], title=p.get("title", "Material"),
-                            page=int(p.get("page", 0)), heading=p.get("heading", ""), text=p.get("text", ""), score=h.score,
-                            type=p.get("type", "text"), concepts=p.get("concepts", [])))
+        out.append(Evidence(
+            chunk_id=p["chunk_id"],
+            material_id=p["material_id"],
+            title=p.get("title", "Material"),
+            page=int(p.get("page", 0)),
+            heading=clean_evidence_text(p.get("heading", "")),
+            text=clean_evidence_text(p.get("text", "")),
+            score=h.score,
+            type=p.get("type", "text"),
+            concepts=p.get("concepts", []),
+        ))
     return out
 
 

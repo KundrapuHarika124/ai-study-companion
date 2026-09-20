@@ -35,29 +35,32 @@ DATA_GUARD = (
 )
 
 def clean_llm_text(text: str) -> str:
-    """Clean common encoding and spacing artifacts from LLM output."""
+    """Clean common mojibake and spacing artifacts from LLM output."""
     replacements = {
-        "â€™": "’",
-        "â€˜": "‘",
-        "â€œ": "“",
-        "â€\x9d": "”",
-        "â€“": "–",
-        "â€”": "—",
-        "â€¢": "•",
-        "ï·": "•",
+        "â€“": "-",
+        "â€”": "-",
+        "â€¢": "-",
+        "ï·": "-",
+        "â†’": "->",
+        "â†": "<-",
+        "â†‘": "^",
+        "â†“": "v",
+        "â€œ": '"',
+        "â€": '"',
+        "â€˜": "'",
+        "â€™": "'",
         "Â": "",
     }
 
     for bad, good in replacements.items():
         text = text.replace(bad, good)
 
-    # Repair common missing spaces between words.
     import re
 
-    text = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)
+    # Fix punctuation accidentally touching the next word.
     text = re.sub(r"([.!?,:;])([A-Za-z])", r"\1 \2", text)
 
-    # Collapse accidental repeated whitespace without destroying newlines.
+    # Collapse accidental repeated spaces, but preserve newlines.
     text = re.sub(r"[ \t]+", " ", text)
 
     return text.strip()

@@ -20,6 +20,29 @@ CHUNK_TARGET = 900
 CHUNK_OVERLAP = 150
 
 
+def clean_extracted_text(text: str) -> str:
+    """Normalize common PDF text-extraction encoding artifacts."""
+    replacements = {
+        "â†’": "→",
+        "â†": "←",
+        "â†‘": "↑",
+        "â†“": "↓",
+        "â€¢": "•",
+        "ï·": "•",
+        "â€“": "–",
+        "â€”": "—",
+        "â€œ": "“",
+        "â€": "”",
+        "â€˜": "‘",
+        "â€™": "’",
+        "Â": "",
+    }
+
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+
+    return text
+
 def storage_path(material_id: str) -> Path:
     base = Path(settings.STORAGE_DIR)
     base.mkdir(parents=True, exist_ok=True)
@@ -74,7 +97,7 @@ def extract_pdf(path: Path) -> dict:
     pages, images = [], []
     ocr_ok = None
     for pno, page in enumerate(doc, start=1):
-        text = page.get_text("text") or ""
+        text = clean_extracted_text(page.get_text("text") or "")
         used_ocr = False
         if len(text.strip()) < 40:
             if ocr_ok is None:
@@ -86,7 +109,7 @@ def extract_pdf(path: Path) -> dict:
                     import io
                     pix = page.get_pixmap(dpi=200)
                     img = Image.open(io.BytesIO(pix.tobytes("png")))
-                    text = pytesseract.image_to_string(img) or ""
+                    text = clean_extracted_text(pytesseract.image_to_string(img) or "")
                     used_ocr = True
                 except Exception as e:  # noqa: BLE001
                     log.warning("OCR failed on page %s: %s", pno, e)

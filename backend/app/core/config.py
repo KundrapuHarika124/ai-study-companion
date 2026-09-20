@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     REDIS_URL: str = ""
     JOB_BACKEND: str = "auto"  # celery | inline | auto
 
-    GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash"
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "openai/gpt-oss-20b"
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     AI_TIMEOUT_SECONDS: int = 45
     RETRIEVAL_MIN_SCORE: float = 0.30
@@ -52,8 +52,11 @@ class Settings(BaseSettings):
         warnings: list[str] = []
         if not self.MONGODB_URI:
             raise RuntimeError("MONGODB_URI is required")
-        if not self.GEMINI_API_KEY:
-            warnings.append("GEMINI_API_KEY is not set: Tutor, quiz generation, grading and recommendations will return 503 until it is configured.")
+        if not self.GROQ_API_KEY:
+            warnings.append(
+                "GROQ_API_KEY is not set: Tutor, quiz generation, grading and recommendations "
+                "will return 503 until it is configured."
+            ) 
         if self.AUTH_MODE == "dev":
             warnings.append("AUTH_MODE=dev: identities come from the X-Dev-User header. NEVER use this outside local development.")
         elif not self.FIREBASE_CREDENTIALS_JSON and not self.FIREBASE_PROJECT_ID:

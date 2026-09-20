@@ -52,7 +52,7 @@ async def unhandled(request: Request, exc: Exception):
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "env": settings.APP_ENV, "warnings": STARTUP_WARNINGS, "ai_configured": bool(settings.GEMINI_API_KEY), "auth_mode": settings.AUTH_MODE}
+    return {"ok": True, "env": settings.APP_ENV, "warnings": STARTUP_WARNINGS, "ai_configured": bool(settings.GROQ_API_KEY), "auth_mode": settings.AUTH_MODE}
 
 
 @app.get("/api/me")

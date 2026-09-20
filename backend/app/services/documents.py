@@ -154,10 +154,31 @@ async def extract_concepts(db, material: dict, pages: list[dict]) -> list[dict]:
         for h in headings:
             if h not in uniq: uniq.append(h)
         return [{"name": h, "description": ""} for h in uniq[:12]]
-    prompt = (f"{DATA_GUARD}\n\nExtract the 6-14 most important learnable concepts from this study material. "
-              "Concepts should be specific topics a learner could be quizzed on (e.g. 'TCP three-way handshake'), not chapter titles. "
-              "Return JSON: {\"concepts\":[{\"name\":\"...\",\"description\":\"one sentence\",\"keywords\":[\"...\"]}]}\n\n"
-              f"<data>\nTitle: {material['title']}\nHeadings: {headings[:40]}\n\n" + "\n\n".join(sample_parts) + "\n</data>")
+    prompt = (f"{DATA_GUARD}\n\n"
+        "Extract the 6-14 most important learnable concepts from this study material.\n\n"
+        
+        "CONCEPT RULES:\n"
+        "- Concepts must be meaningful topics that a learner could be quizzed on.\n"
+        "- Prefer concise topic names such as 'Generative AI Fundamentals', "
+        "'Generative Adversarial Networks', 'Discriminative vs Generative AI', "
+        "'Application Integration', or 'Neural Network Parameters'.\n"
+        "- Do NOT return chapter titles unless the title itself represents a real learnable concept.\n"
+        "- Do NOT return complete sentences, questions, instructions, or fragments.\n"
+        "- Do NOT include PDF bullets, numbering, symbols, or formatting characters in concept names.\n"
+        "- Remove encoding artifacts such as 'ï·', 'â€¢', 'â€“', 'â€”', and similar corrupted characters.\n"
+        "- Do NOT copy a sentence from the document as a concept name.\n"
+        "- Normalize whitespace and punctuation.\n"
+        "- Each concept name should normally be 2-8 words.\n"
+        "- Concepts should represent the actual subject matter, not the formatting of the PDF.\n\n"
+        
+        "Return JSON only:\n"
+        "{\"concepts\":[{\"name\":\"...\",\"description\":\"one sentence\",\"keywords\":[\"...\"]}]}\n\n"
+        
+        f"<data>\nTitle: {material['title']}\n"
+        f"Headings: {headings[:40]}\n\n"
+        + "\n\n".join(sample_parts)
+        + "\n</data>"
+    )
     try:
         out = await llm.generate_json(prompt, _ConceptList, feature="concept_extraction", user_id=material["user_id"],
                                       project_id=material["project_id"], db=db, temperature=0.2)

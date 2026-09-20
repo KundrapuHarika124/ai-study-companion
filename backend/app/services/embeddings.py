@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-
+import gc
 from app.core.config import settings
 
 log = logging.getLogger("embeddings")
@@ -49,10 +49,14 @@ def embed_sync(texts: list[str]) -> list[list[float]]:
 
     vectors = model.embed(
         texts,
-        batch_size=32,
+        batch_size=8,
     )
 
-    return [vector.tolist() for vector in vectors]
+    result = [vector.tolist() for vector in vectors]
+
+    gc.collect()
+
+    return result
 
 
 async def embed(texts: list[str]) -> list[list[float]]:

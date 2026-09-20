@@ -34,6 +34,33 @@ DATA_GUARD = (
     "you don't have. Respond only with the requested format."
 )
 
+def clean_llm_text(text: str) -> str:
+    """Clean common encoding and spacing artifacts from LLM output."""
+    replacements = {
+        "â€™": "’",
+        "â€˜": "‘",
+        "â€œ": "“",
+        "â€\x9d": "”",
+        "â€“": "–",
+        "â€”": "—",
+        "â€¢": "•",
+        "ï·": "•",
+        "Â": "",
+    }
+
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+
+    # Repair common missing spaces between words.
+    import re
+
+    text = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)
+    text = re.sub(r"([.!?,:;])([A-Za-z])", r"\1 \2", text)
+
+    # Collapse accidental repeated whitespace without destroying newlines.
+    text = re.sub(r"[ \t]+", " ", text)
+
+    return text.strip()
 
 class LLM:
     def __init__(self):
@@ -229,7 +256,7 @@ class LLM:
                 f"AI request failed ({err}). Please retry."
             )
 
-        return text
+        return clean_llm_text(text)
 
     async def generate_json(
         self,

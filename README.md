@@ -5,6 +5,23 @@ A learning workspace where a learner uploads their own PDFs, learns with a Tutor
 - **Backend:** FastAPI · MongoDB (Motor) · Qdrant · local sentence-transformers embeddings · Google Gemini · Celery + Redis (or inline jobs)
 - **Frontend:** React 18 · Vite · TypeScript · Tailwind · TanStack Query · Firebase Auth
 - **Docs:** [architecture](docs/architecture.md) · [AI design](docs/ai.md) · [evaluation](docs/evaluation.md) · [decisions](docs/decisions.md) · [development prompts](docs/development-prompts.md)
+<img width="957" height="434" alt="Screenshot 2026-09-22 173103" src="https://github.com/user-attachments/assets/99c5f43e-f69c-472d-b325-3fbfbfde47e8" />
+<img width="836" height="436" alt="Screenshot 2026-09-22 173749" src="https://github.com/user-attachments/assets/92b8b6cf-bb93-4f33-88bb-6bc641a320a0" />
+<img width="876" height="437" alt="Screenshot 2026-09-22 173801" src="https://github.com/user-attachments/assets/8a651d92-594e-4b74-8047-c1f9817f9805" />
+<img width="863" height="434" alt="Screenshot 2026-09-22 173827" src="https://github.com/user-attachments/assets/a6443e12-0e4a-4678-9f6f-95b9addbc038" />
+<img width="541" height="435" alt="Screenshot 2026-09-22 174232" src="https://github.com/user-attachments/assets/67b23b41-e90c-48a7-bd7b-66c0b275c02f" />
+<img width="557" height="438" alt="Screenshot 2026-09-22 174257" src="https://github.com/user-attachments/assets/8857eefc-601b-48f0-ba2a-bca03628c82f" />
+<img width="635" height="433" alt="Screenshot 2026-09-22 175149" src="https://github.com/user-attachments/assets/f1a91437-471b-4d80-9253-e5d634f4c756" />
+<img width="605" height="397" alt="Screenshot 2026-09-22 174316" src="https://github.com/user-attachments/assets/2112412b-c9a5-4c81-9602-e4c17dc6c168" />
+<img width="599" height="382" alt="Screenshot 2026-09-22 174335" src="https://github.com/user-attachments/assets/d73a2543-b96b-4669-ae31-57c1eaaf739e" />
+<img width="575" height="401" alt="Screenshot 2026-09-22 174406" src="https://github.com/user-attachments/assets/48bacdf0-d612-41ac-9753-462fea73d956" />
+
+## ADMIN VIEW
+<img width="560" height="436" alt="Screenshot 2026-09-22 174417" src="https://github.com/user-attachments/assets/52336696-16e4-452e-9df8-59bb59dee849" />
+<img width="619" height="436" alt="Screenshot 2026-09-22 174435" src="https://github.com/user-attachments/assets/25a013b1-18cb-4f34-93e8-b0fd7a173b20" />
+<img width="608" height="431" alt="Screenshot 2026-09-22 174448" src="https://github.com/user-attachments/assets/6f3539f9-1baa-47a8-97b6-3a664db31f56" />
+<img width="584" height="430" alt="Screenshot 2026-09-22 174501" src="https://github.com/user-attachments/assets/eaa00c80-605b-4fde-9183-b9890840c130" />
+
 
 ## What it does
 
